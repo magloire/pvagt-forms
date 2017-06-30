@@ -1,14 +1,183 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="danger">
     <ion-title>
-      Ionic Blank
+      Dagsrapport
     </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="prev()"><ion-icon name="arrow-back"></ion-icon></button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="next()"><ion-icon name="arrow-forward"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+  <ion-slides #signupSlider>
+    <ion-slide>
+      <!--<p *ngIf="submitAttempt" style="color: #ea6153">Udfyld alle felter!!</p>-->
+      <ion-list>
+        <form [formGroup]="slideOneForm">
+          <ion-item>
+            <ion-label stacked>Dagseddel for P-vagt:</ion-label>
+            <ion-input formControlName="navn" type="text"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label stacked>Min dag har været:</ion-label>
+            <ion-range min="1" max="5" step="1" snaps="true" formControlName="mood" color="dark">
+              <ion-icon range-left  color="danger" name="sad"></ion-icon>
+              <ion-icon range-right color="secondary" name="happy"></ion-icon>
+            </ion-range>
+          </ion-item>
+
+          
+
+          <ion-item>
+              <ion-label stacked>Kort notat vedr. evt. hændelse:</ion-label>
+              <ion-textarea formControlName="notat"></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-label stacked>Pålagte afgifter:</ion-label>
+            <ion-input formControlName="afgifter" type="number"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label stacked>Annulleringer:</ion-label>
+            <ion-input formControlName="annulleringer" type="number"></ion-input>
+          </ion-item>
+        </form>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list>
+        <ion-list-header>
+          Jeg har været i:
+        </ion-list-header>
+        <form [formGroup]="slideTwoForm">
+          <ion-item>
+            <ion-label>Lyngby midt</ion-label>
+            <ion-checkbox formControlName="place_Lyngby_midt"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Lyngby vest</ion-label>
+            <ion-checkbox formControlName="place_Lyngby_vest"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Virum</ion-label>
+            <ion-checkbox formControlName="place_Virum"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Taarbæk</ion-label>
+            <ion-checkbox formControlName="place_Taarbaek"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>DTU</ion-label>
+            <ion-checkbox formControlName="place_Dtu"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Andet:</ion-label>
+            <ion-input formControlName="place_Andet"></ion-input>
+          </ion-item>
+
+      
+        </form>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-list>
+        <ion-list-header>
+          På skole:
+        </ion-list-header>
+        <form [formGroup]="slideThreeForm">
+          <ion-item>
+            <ion-label>Hummel </ion-label>
+            <ion-checkbox formControlName="skole_Hummel"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Fuglsang</ion-label>
+            <ion-checkbox formControlName="skole_Fuglsang"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Virum</ion-label>
+            <ion-checkbox formControlName="skole_Virum"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Taarbæk</ion-label>
+            <ion-checkbox formControlName="skole_Taarbaek"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Trongård</ion-label>
+            <ion-checkbox formControlName="skole_Tronegaard"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Kongevejen</ion-label>
+            <ion-checkbox formControlName="skole_Kongevejen"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Engelsborg</ion-label>
+            <ion-checkbox formControlName="skole_Engelsborg"></ion-checkbox>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>Lundtofte</ion-label>
+            <ion-checkbox formControlName="skole_Lundtofte"></ion-checkbox>
+          </ion-item>
+
+      
+        </form>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide>
+      <form [formGroup]="slideFourForm">
+      <ion-list radio-group formControlName="vejr">
+        <ion-list-header>
+          Dagens vejr:
+        </ion-list-header>
+        <!--<form [formGroup]="slideFourForm">-->
+          <ion-item>
+            <ion-label><ion-icon big name="sunny"></ion-icon> Soleskin</ion-label>
+            <ion-radio value="sol"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label><ion-icon name="cloudy"></ion-icon> Sky</ion-label>
+            <ion-radio value="sky"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label><ion-icon name="rainy"></ion-icon> Regnvejr</ion-label>
+            <ion-radio value="regn"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label><ion-icon name="snow"></ion-icon> Snevejr</ion-label>
+            <ion-radio value="sne"></ion-radio>
+          </ion-item>
+          
+        <!--</form>-->
+      </ion-list>
+      <ion-item>
+        <ion-label stacked>Temperatur</ion-label>
+        <ion-input formControlName="temperatur" type="number"></ion-input>
+      </ion-item>
+
+      </form>
+      <button ion-button full color="primary" (click)="save()">Send rapport!</button>
+    </ion-slide>
+  </ion-slides>
 </ion-content>
