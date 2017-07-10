@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { AgeValidator } from '../../validators/age';
 import { UsernameValidator } from '../../validators/username';
 import {RapportServiceProvider} from '../../providers/rapport-service/rapport-service';
@@ -11,7 +11,7 @@ import {RapportServiceProvider} from '../../providers/rapport-service/rapport-se
 })
 export class HomePage {
 
-  @ViewChild('signupSlider') signupSlider: any;
+  @ViewChild('reportSlider') reportSlider: any;
 
   slideOneForm: FormGroup;
   slideTwoForm: FormGroup;
@@ -19,8 +19,12 @@ export class HomePage {
   slideFourForm: FormGroup;
 
   submitAttempt: boolean = false;
+  // static alertCtrl: AlertController;
 
-  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, private rapService: RapportServiceProvider) {
+  constructor(public navCtrl: NavController, 
+              public formBuilder: FormBuilder, 
+              private rapService: RapportServiceProvider,
+              public alertCtrl: AlertController) {
 
     this.slideOneForm = formBuilder.group({
       navn: ['Magloire', Validators.required],
@@ -58,11 +62,11 @@ export class HomePage {
   }
 
   prev(){
-    this.signupSlider.slidePrev();
+    this.reportSlider.slidePrev();
   }
 
   next(){
-    this.signupSlider.slideNext();
+    this.reportSlider.slideNext();
   }
 
   serialize(obj){
@@ -75,25 +79,36 @@ export class HomePage {
     return str.join("&");
   }
 
+   showAlert(){
+     console.log('I was called!!');
+    let toast = this.alertCtrl.create({
+      title: 'Tak for din indberetning',
+      subTitle: 'Din rapport er blevet registreret!',
+      buttons: ['Ok']
+    });
+
+    toast.present();
+  }
+
   save(){
     console.log('inside save!');
     this.submitAttempt = true;
 
     if(!this.slideOneForm.valid){
       console.log('slide 1 invalid');
-      this.signupSlider.slideTo(0);
+      this.reportSlider.slideTo(0);
     }else if(!this.slideTwoForm.valid){
             console.log('slide 2 invalid');
 
-      this.signupSlider.slideTo(1);
+      this.reportSlider.slideTo(1);
     }else if(!this.slideThreeForm.valid){
             console.log('slide 3 invalid');
 
-      this.signupSlider.slideTo(2);
+      this.reportSlider.slideTo(2);
     }else if(!this.slideFourForm.valid){
             console.log('slide 4 invalid');
 
-      this.signupSlider.slideTo(3);
+      this.reportSlider.slideTo(3);
     }
     else{
       let options = {};
@@ -131,13 +146,21 @@ export class HomePage {
 
 
       // let opts = this.serialize(options);
-      let opts = JSON.stringify(options);
+     // let opts = JSON.stringify(options);
       
-      console.log(opts);
+     // console.log(opts);
 
       this.rapService.createReport('/spatialmap?page=create_pvagt_rapport',options)
         .then(ret => {
+          this.submitAttempt = false;
+          console.log(this.submitAttempt);
           console.log(ret);
+          this.showAlert();
+        //  this.slideOneForm.reset();
+        //  this.slideTwoForm.reset();
+        //  this.slideThreeForm.reset();
+        //  this.slideFourForm.reset();
+          this.reportSlider.slideTo(0);
         });
     }
   }

@@ -13,15 +13,36 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides #signupSlider>
+  <ion-slides #reportSlider>
     <ion-slide>
-      <!--<p *ngIf="submitAttempt" style="color: #ea6153">Udfyld alle felter!!</p>-->
-      <ion-list>
-        <form [formGroup]="slideOneForm">
+      <p *ngIf="submitAttempt" style="color: #ea6153">Udfyld alle felter!!</p>
+      <form [formGroup]="slideOneForm">
+      <ion-list radio-group formControlName="navn">
+        <ion-list-header>
+          Dagseddel for P-vagt:
+        </ion-list-header>
+        <!--<form [formGroup]="slideFourForm">-->
           <ion-item>
+            <ion-label>9916</ion-label>
+            <ion-radio value="9916"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>9966</ion-label>
+            <ion-radio value="9966"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>9977</ion-label>
+            <ion-radio value="9977"></ion-radio>
+          </ion-item>
+        <!--</form>-->
+      </ion-list>
+      <ion-list>
+          <!--<ion-item>
             <ion-label stacked>Dagseddel for P-vagt:</ion-label>
             <ion-input formControlName="navn" type="text"></ion-input>
-          </ion-item>
+          </ion-item>-->
 
           <ion-item>
             <ion-label stacked>Min dag har været:</ion-label>
@@ -47,8 +68,8 @@
             <ion-label stacked>Annulleringer:</ion-label>
             <ion-input formControlName="annulleringer" type="number"></ion-input>
           </ion-item>
-        </form>
       </ion-list>
+      </form>
     </ion-slide>
     <ion-slide>
       <ion-list>
