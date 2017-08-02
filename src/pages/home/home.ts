@@ -27,28 +27,28 @@ export class HomePage {
               public alertCtrl: AlertController) {
 
     this.slideOneForm = formBuilder.group({
-      navn: ['Magloire', Validators.required],
-      afgifter: [5000, Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
-      mood: [3, Validators.required],
-      annulleringer: [500, Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
-      notat: ['hello']
+      navn: ['', Validators.required],
+      afgifter: [0, Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
+      mood: [0, Validators.required],
+      annulleringer: [0, Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
+      notat: ['']
     });
 
     this.slideTwoForm = formBuilder.group({
-      place_Lyngby_midt: [true,],
-      place_Lyngby_vest: [true,],
-      place_Virum: [true,],
+      place_Lyngby_midt: [false,],
+      place_Lyngby_vest: [false,],
+      place_Virum: [false,],
       place_Taarbaek: [false,],
       place_Dtu: [false,],
       place_Andet: ['',]
     });
 
     this.slideThreeForm = formBuilder.group({
-      skole_Hummel: [true,],
-      skole_Fuglsang: [true,],
+      skole_Hummel: [false,],
+      skole_Fuglsang: [false,],
       skole_Virum: [false,],
-      skole_Taarbaek: [true,],
-      skole_Tronegaard: [true,],
+      skole_Taarbaek: [false,],
+      skole_Tronegaard: [false,],
       skole_Kongevejen: [false,],
       skole_Engelsborg: [false,],
       skole_Lundtofte: [false,]
@@ -56,8 +56,8 @@ export class HomePage {
     });
 
     this.slideFourForm = formBuilder.group({
-      vejr: ['sol',],
-      temperatur: [10,]
+      vejr: ['',],
+      temperatur: [0,]
     });
   }
 
@@ -123,11 +123,18 @@ export class HomePage {
       }
       
       for(const place in slide2){
-        if(place !== 'placeAndet' && slide2[place]){
+        if(place !== 'place_Andet' && slide2[place]){
+          console.log(place);
           temp.push(place.substr(6).split('_').join(" "));
         }
       }
-      options['placeAndet'] = slide2['placeAndet'];
+      if(slide2['place_Andet']){
+        console.log(slide2['place_Andet']);
+        slide2['place_Andet'].split(',').map((x) => {return x.trim()}).forEach(element => {
+          temp.push(element);
+        });
+      }
+    //  options['placeAndet'] = slide2['place_Andet'];
       options['steder'] = temp.join(';');
       temp = [];
 
@@ -143,6 +150,10 @@ export class HomePage {
       }
       
       console.log(options);
+      if(options['notat'] == ''){options['notat'] = '-';}
+      if(options['afgifter'] == ''){options['afgifter'] = 0;}
+      if(options['annulleringer'] == ''){options['annulleringer'] = 0;}
+      if(options['temperatur'] == ''){options['temperatur'] = 0;}
 
 
       // let opts = this.serialize(options);
@@ -150,16 +161,16 @@ export class HomePage {
       
      // console.log(opts);
 
-      this.rapService.createReport('/spatialmap?page=create_pvagt_rapport',options)
+      this.rapService.createReport('http://kommunekort.ltk.dk/spatialmap?page=create_pvagt_rapport',options)
         .then(ret => {
           this.submitAttempt = false;
-          console.log(this.submitAttempt);
+          console.log("data was submitted : ",this.submitAttempt);
           console.log(ret);
           this.showAlert();
-        //  this.slideOneForm.reset();
-        //  this.slideTwoForm.reset();
-        //  this.slideThreeForm.reset();
-        //  this.slideFourForm.reset();
+          this.slideOneForm.reset();
+          this.slideTwoForm.reset();
+          this.slideThreeForm.reset();
+          this.slideFourForm.reset();
           this.reportSlider.slideTo(0);
         });
     }
