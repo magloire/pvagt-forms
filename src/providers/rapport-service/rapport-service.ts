@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, HttpModule, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -11,10 +11,10 @@ export class RapportServiceProvider {
     console.log('Hello RapportServiceProvider Provider');
   }
 
-  createReport(url, options){
-    if(this.data){
-      return Promise.resolve(this.data);
-    }
+  createReport(url, options){ 
+    // if(this.data){console.log('this data = true');console.log(this.data);
+    //   return Promise.resolve(this.data);
+    // }
 
     let _data = new URLSearchParams();
     for(const opt in options){
@@ -22,8 +22,6 @@ export class RapportServiceProvider {
     }
 
     return new Promise(resolve => {
-    //  let headers = new Headers({'Content-Type':'application/json'});
-     // let opts = new RequestOptions({headers : headers});
       this.http.post(url,_data)
           .subscribe(data => {
             this.data = data;
